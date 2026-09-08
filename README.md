@@ -4,4 +4,4 @@ Obsidian plugin to monoalphabetic substitution cipher and decipher text based on
 
 ## Todo
 
-[ ] Cipher/decipher the entire note.
+- [ ] Cipher/decipher the entire note.
