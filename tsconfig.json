@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+
+    "typeRoots": ["node_modules/@types", "node_modules/obsidian"],
+
+    "module": "ESNext",
+
+    "target": "ES6",
+
+    "moduleResolution": "node",
+
+    "strict": true,
+
+    "noImplicitAny": true,
+
+    "strictNullChecks": true,
+
+    "allowJs": false
+  },
+
+  "include": ["src/**/*.ts"]
+}
