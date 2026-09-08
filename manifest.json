@@ -1,9 +1,9 @@
 {
-  "id": "greek-map",
-  "name": "GreekMap",
+  "id": "mono-sub-cipher",
+  "name": "MonoSubCipher",
   "version": "1.0.0",
   "minAppVersion": "1.5.0",
-  "description": "Maps selected text between English and Greek using a custom alphabet mapping.",
+  "description": "Monoalphabetic Substitution Cipher",
   "author": "Ali Bazrafshan",
   "isDesktopOnly": false
 }

@@ -1,91 +1,106 @@
-import { Plugin, Editor } from "obsidian";
+import { Plugin } from "obsidian";
 
 // ================================
-// Greek Mapping Table
+// Mapping Table
 // ================================
-const englishToGreek: Record<string, string> = {
-  a: "α",
-  b: "β",
-  c: "ψ",
-  d: "δ",
-  e: "ε",
-  f: "φ",
-  g: "γ",
-  h: "η",
-  i: "ι",
-  j: "ξ",
-  k: "κ",
-  l: "λ",
-  m: "μ",
-  n: "ν",
-  o: "ο",
-  p: "π",
-  q: "Π",
-  r: "ρ",
-  s: "σ",
-  t: "τ",
-  u: "θ",
-  v: "ω",
-  w: "ς",
-  x: "χ",
-  y: "υ",
-  z: "ζ",
+const mapping: Record<string, string> = {
+	// Lowercase
+	a: "ф",
+	b: "и",
+	c: "с",
+	d: "в",
+	e: "у",
+	f: "а",
+	g: "п",
+	h: "р",
+	i: "ш",
+	j: "о",
+	k: "л",
+	l: "д",
+	m: "ь",
+	n: "т",
+	o: "щ",
+	p: "з",
+	q: "й",
+	r: "к",
+	s: "ы",
+	t: "е",
+	u: "г",
+	v: "м",
+	w: "ц",
+	x: "ч",
+	y: "н",
+	z: "я",
+
+	// Uppercase
+	A: "Ф",
+	B: "И",
+	C: "С",
+	D: "В",
+	E: "У",
+	F: "А",
+	G: "П",
+	H: "Р",
+	I: "Ш",
+	J: "О",
+	K: "Л",
+	L: "Д",
+	M: "Ь",
+	N: "Т",
+	O: "Щ",
+	P: "З",
+	Q: "Й",
+	R: "К",
+	S: "Ы",
+	T: "Е",
+	U: "Г",
+	V: "М",
+	W: "Ц",
+	X: "Ч",
+	Y: "Н",
+	Z: "Я"
 };
 
 // ================================
 // Reverse Mapping
 // ================================
-const greekToEnglish: Record<string, string> = {};
-for (const key in englishToGreek) {
-  const value = englishToGreek[key];
-  greekToEnglish[value] = key;
+const reverseMapping: Record<string, string> = {};
+for (const key in mapping) {
+  const value = mapping[key];
+  reverseMapping[value] = key;
 }
-
-// ================================
-// Uppercase Support
-// ================================
-function addUppercase(map: Record<string, string>) {
-  const entries = Object.entries(map);
-
-  for (const [key, value] of entries) {
-    map[key.toUpperCase()] = value;
-  }
-}
-
-addUppercase(englishToGreek);
-addUppercase(greekToEnglish);
 
 // ================================
 // Detection
 // ================================
-function containsGreek(text: string): boolean {
-  return /[\u0370-\u03FF]/.test(text);
+function isEncoded(text: string): boolean {
+	return Object.values(mapping).some(char => text.includes(char));
 }
 
 // ================================
 // Mapping Engine
 // ================================
 function mapText(text: string): string {
-  const mapping = containsGreek(text) ? greekToEnglish : englishToGreek;
+  const currentMapping = isEncoded(text) ? reverseMapping : mapping;
 
-  return [...text].map((character) => mapping[character] ?? character).join("");
+  return [...text].map((character) => currentMapping[character] ?? character).join("");
 }
 
 // ================================
 // Obsidian Plugin
 // ================================
 
-export default class GreekMapPlugin extends Plugin {
+export default class MonoSubCipherPlugin extends Plugin {
   onload() {
     // Left sidebar ribbon button
-    this.addRibbonIcon("omega", "Map Greek ↔ English", () => {
+    this.addRibbonIcon("case-upper", "Cipher / Decipher", () => {
       this.mapSelection();
     });
 
     // Command palette command
     this.addCommand({
-      id: "map-selection",
-      name: "Map Greek ↔ English",
+      id: "cipher-decipher",
+      name: "Cipher / Decipher",
       editorCallback: () => {
         this.mapSelection();
       },
